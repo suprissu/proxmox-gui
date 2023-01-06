@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import infrastructure from "@/bootstrap/Infrastructure.bootstrap";
-import Endpoints from "@/domains/Endpoints.domains";
+import { EndpointsAPI } from "@/domains/Endpoints.domains";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { setCookie } from "cookies-next";
 
@@ -22,12 +22,13 @@ export default async function handler(
 
   const {
     data: { data: result },
-  } = await infrastructure.httpServer.post(Endpoints.ACCESS_TICKET, {
+  } = await infrastructure.httpServer.post(EndpointsAPI.ACCESS_TICKET, {
     username: `${username}@pam`,
     password,
   });
 
   setCookie("PVEAuthCookie", result.ticket, { req, res });
+  setCookie("csrfpreventiontoken", result.CSRFPreventionToken, { req, res });
 
   res.status(200).json({ code: 200, message: "You signed in" });
 }

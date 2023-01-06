@@ -1,12 +1,13 @@
 // #region IMPORTS
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import tw from "twin.macro";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import infrastructure from "@/bootstrap/Infrastructure.bootstrap";
-import Endpoints from "@/domains/Endpoints.domains";
+import { EndpointsClient } from "@/domains/Endpoints.domains";
 import { useState } from "react";
-import { Text } from "@/components/atoms";
+import { Button, Text } from "@/components/atoms";
+import { PowerIcon } from "@heroicons/react/24/outline";
 // #endregion IMPORTS
 
 // #region STYLED COMPONENTS
@@ -33,6 +34,61 @@ type NodesType = {
 }[];
 // #endregion PROPS
 
+const OnlineStatusSection: React.FC<{ name: string; status: string }> = ({
+  name,
+  status,
+}) => {
+  const [isShutdownPrompt, setIsShutdownPrompt] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleShutdown = useCallback(() => {
+    setIsLoading(true);
+    infrastructure.httpClient
+      .post(EndpointsClient.NODES_SHUTDOWN, {
+        node: name,
+      })
+      .then(() => alert("Shutdown Command Success"))
+      .catch((e) => console.log(e))
+      .finally(() => setIsLoading(false));
+  }, [name]);
+
+  return isShutdownPrompt ? (
+    <HStack>
+      <Button.Regular
+        variants="error"
+        disabled={isLoading}
+        onClick={handleShutdown}
+      >
+        {isLoading ? "Loading" : "Confirm"}
+      </Button.Regular>
+      <Button.Basic onClick={() => setIsShutdownPrompt(false)}>
+        Cancel
+      </Button.Basic>
+    </HStack>
+  ) : (
+    <HStack>
+      <Button.Regular variants="success">{status}</Button.Regular>
+      <Button.Outline
+        variants="error"
+        onClick={() => setIsShutdownPrompt(true)}
+      >
+        <PowerIcon css={[tw`w-4 h-4 text-error-500`]} />
+      </Button.Outline>
+    </HStack>
+  );
+};
+
+const Node: React.FC<{ name: string; status: string }> = ({ name, status }) => {
+  return (
+    <NodeCard>
+      <Text.NormalFit>{name}</Text.NormalFit>
+      {status === "online" && (
+        <OnlineStatusSection name={name} status={status} />
+      )}
+    </NodeCard>
+  );
+};
+
 // #region MAIN COMPONENT
 const Home: React.FC = () => {
   const router = useRouter();
@@ -46,21 +102,15 @@ const Home: React.FC = () => {
     }
 
     infrastructure.httpClient
-      .get(Endpoints.GET_NODES)
-      .then(({ data }) => setNodes(data as unknown as NodesType));
+      .get(EndpointsClient.GET_NODES)
+      .then(({ data }) => setNodes(data as unknown as NodesType))
+      .catch((e) => console.log(e));
   }, [router]);
 
   return (
     <Container>
       {nodes.map((data, index) => (
-        <NodeCard key={index}>
-          <Text.NormalFit>{data.node}</Text.NormalFit>
-          <HStack>
-            <Text.NormalFit css={tw`bg-green-500 text-white p-2 rounded-md`}>
-              {data.status}
-            </Text.NormalFit>
-          </HStack>
-        </NodeCard>
+        <Node key={index} name={data.node} status={data.status} />
       ))}
     </Container>
   );

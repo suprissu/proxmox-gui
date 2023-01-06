@@ -10,7 +10,7 @@ import {
   GetAccessTicketScheme,
 } from "@/domains/GetAccessTicket";
 import infrastructure from "@/bootstrap/Infrastructure.bootstrap";
-import Endpoints from "@/domains/Endpoints.domains";
+import { EndpointsClient } from "@/domains/Endpoints.domains";
 import { useState } from "react";
 import { useEffect } from "react";
 import { getCookie } from "cookies-next";
@@ -39,7 +39,7 @@ const LoginPage: React.FC = () => {
     (values: GetAccessTicketParams) => {
       setIsLoading(true);
       infrastructure.httpClient
-        .post(Endpoints.ACCESS_TICKET, values)
+        .post(EndpointsClient.ACCESS_TICKET, values)
         .then(() => router.push("/"))
         .catch((e) => console.log(e))
         .finally(() => setIsLoading(false));

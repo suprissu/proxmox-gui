@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import infrastructure from "@/bootstrap/Infrastructure.bootstrap";
-import Endpoints from "@/domains/Endpoints.domains";
+import { EndpointsAPI } from "@/domains/Endpoints.domains";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getCookie, setCookie } from "cookies-next";
 
@@ -15,7 +15,7 @@ export default async function handler(
 
   const {
     data: { data: result },
-  } = await infrastructure.httpServer.get(Endpoints.GET_NODES, {
+  } = await infrastructure.httpServer.get(EndpointsAPI.GET_NODES, {
     headers: { Cookie: `PVEAuthCookie=${ticket}` },
   });
 
