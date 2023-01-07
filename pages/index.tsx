@@ -32,13 +32,40 @@ type NodesType = {
   node: string;
   uptime: number;
 }[];
+
+type PromptProps = {
+  status: string;
+  isLoading: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
+};
 // #endregion PROPS
+
+const Prompt: React.FC<PromptProps> = ({
+  status,
+  isLoading,
+  onConfirm,
+  onCancel,
+}) => {
+  return (
+    <HStack>
+      <Button.Regular
+        variants={status === "online" ? "error" : "success"}
+        disabled={isLoading}
+        onClick={onConfirm}
+      >
+        {isLoading ? "Loading" : "Confirm"}
+      </Button.Regular>
+      <Button.Basic onClick={onCancel}>Cancel</Button.Basic>
+    </HStack>
+  );
+};
 
 const OnlineStatusSection: React.FC<{ name: string; status: string }> = ({
   name,
   status,
 }) => {
-  const [isShutdownPrompt, setIsShutdownPrompt] = useState(false);
+  const [isPromptShow, setIsPromptShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleShutdown = useCallback(() => {
@@ -52,25 +79,32 @@ const OnlineStatusSection: React.FC<{ name: string; status: string }> = ({
       .finally(() => setIsLoading(false));
   }, [name]);
 
-  return isShutdownPrompt ? (
-    <HStack>
-      <Button.Regular
-        variants="error"
-        disabled={isLoading}
-        onClick={handleShutdown}
-      >
-        {isLoading ? "Loading" : "Confirm"}
-      </Button.Regular>
-      <Button.Basic onClick={() => setIsShutdownPrompt(false)}>
-        Cancel
-      </Button.Basic>
-    </HStack>
+  const handleWake = useCallback(() => {
+    setIsLoading(true);
+    infrastructure.httpClient
+      .post(EndpointsClient.NODES_WAKE, {
+        node: name,
+      })
+      .then(() => alert("Wake Command Success"))
+      .catch((e) => console.log(e))
+      .finally(() => setIsLoading(false));
+  }, [name]);
+
+  return isPromptShow ? (
+    <Prompt
+      isLoading={isLoading}
+      status={status}
+      onConfirm={handleShutdown}
+      onCancel={() => setIsPromptShow(false)}
+    />
   ) : (
     <HStack>
-      <Button.Regular variants="success">{status}</Button.Regular>
+      <Button.Regular variants={status === "online" ? "success" : "info"}>
+        {status}
+      </Button.Regular>
       <Button.Outline
-        variants="error"
-        onClick={() => setIsShutdownPrompt(true)}
+        variants={status === "online" ? "error" : "success"}
+        onClick={() => setIsPromptShow(true)}
       >
         <PowerIcon css={[tw`w-4 h-4 text-error-500`]} />
       </Button.Outline>
@@ -82,9 +116,7 @@ const Node: React.FC<{ name: string; status: string }> = ({ name, status }) => {
   return (
     <NodeCard>
       <Text.NormalFit>{name}</Text.NormalFit>
-      {status === "online" && (
-        <OnlineStatusSection name={name} status={status} />
-      )}
+      <OnlineStatusSection name={name} status={status} />
     </NodeCard>
   );
 };

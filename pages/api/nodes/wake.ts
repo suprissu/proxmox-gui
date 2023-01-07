@@ -17,10 +17,8 @@ export default async function handler(
 
   try {
     await infrastructure.httpServer.post(
-      EndpointsAPI.NODES_STATUS.replace("{node}", node),
-      {
-        command: "shutdown",
-      },
+      EndpointsAPI.NODE_WOL.replace("{node}", node),
+      {},
       {
         headers: { Cookie: `PVEAuthCookie=${ticket}`, csrfpreventiontoken },
       }
@@ -29,6 +27,6 @@ export default async function handler(
   } catch (e) {
     return res
       .status(500)
-      .json({ code: 500, message: `Server failed to shutdown. trace(${e})` });
+      .json({ code: 500, message: `Server failed to wake. trace(${e})` });
   }
 }
