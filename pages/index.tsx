@@ -94,7 +94,7 @@ const OnlineStatusSection: React.FC<{ name: string; status: string }> = ({
     <Prompt
       isLoading={isLoading}
       status={status}
-      onConfirm={handleShutdown}
+      onConfirm={status === "online" ? handleShutdown : handleWake}
       onCancel={() => setIsPromptShow(false)}
     />
   ) : (
