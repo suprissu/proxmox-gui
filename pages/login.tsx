@@ -8,9 +8,9 @@ import { Button, Input, Text } from "@/components/atoms";
 import {
   GetAccessTicketParams,
   GetAccessTicketScheme,
-} from "@/domains/GetAccessTicket";
+} from "@/services/domains/GetAccessTicket.domains";
 import infrastructure from "@/bootstrap/Infrastructure.bootstrap";
-import { EndpointsClient } from "@/domains/Endpoints.domains";
+import { EndpointsClient } from "services/Endpoints.services";
 import { useState } from "react";
 import { useEffect } from "react";
 import { getCookie } from "cookies-next";

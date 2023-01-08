@@ -19,7 +19,7 @@
       "@/bootstrap/*": ["bootstrap/*"],
       "@/components/*": ["components/*"],
       "@/config/*": ["config/*"],
-      "@/domains/*": ["domains/*"],
+      "@/services/*": ["services/*"],
       "@/utils/*": ["utils/*"],
       "@/types/*": ["types/*"]
     }

@@ -1,7 +1,7 @@
-import React from 'react';
-import tw from 'twin.macro';
+import React from "react";
+import tw from "twin.macro";
 
-import { ExtraStyle } from '@/components/Types.components';
+import { ExtraStyle } from "@/components/Types.components";
 
 const basic = {
   primary: tw`text-primary-500 hover:bg-primary-100 disabled:text-primary-100`,
@@ -22,18 +22,18 @@ const solid = {
 };
 
 const outline = {
-  primary: tw`border text-primary-500 border-primary-500 hover:bg-primary-100 disabled:text-primary-100 border-primary-100`,
-  secondary: tw`border text-secondary-500 border-secondary-500 hover:bg-secondary-100 disabled:text-secondary-100 border-secondary-100`,
-  error: tw`border text-error-500 border-error-500 hover:bg-error-100 disabled:text-error-100 border-error-100`,
-  success: tw`border text-success-500 border-success-500 hover:bg-success-100 disabled:text-success-100 border-success-100`,
-  warning: tw`border text-warning-500 border-warning-500 hover:bg-warning-100 disabled:text-warning-100 border-warning-100`,
-  info: tw`border text-info-500 border-info-500 hover:bg-info-100 disabled:text-info-100 border-info-100`,
+  primary: tw`border text-primary-500 border-primary-500 hover:bg-primary-100 disabled:(text-primary-100 border-primary-100)`,
+  secondary: tw`border text-secondary-500 border-secondary-500 hover:bg-secondary-100 disabled:(text-secondary-100 border-secondary-100)`,
+  error: tw`border text-error-500 border-error-500 hover:bg-error-100 disabled:(text-error-100 border-error-100)`,
+  success: tw`border text-success-500 border-success-500 hover:bg-success-100 disabled:(text-success-100 border-success-100)`,
+  warning: tw`border text-warning-500 border-warning-500 hover:bg-warning-100 disabled:(text-warning-100 border-warning-100)`,
+  info: tw`border text-info-500 border-info-500 hover:bg-info-100 disabled:(text-info-100 border-info-100)`,
 };
 
 export type BaseButtonProps = React.ButtonHTMLAttributes<unknown> & {
   disabled?: boolean;
-  variants?: 'primary' | 'secondary' | 'error' | 'success' | 'warning' | 'info';
-  types?: 'solid' | 'outline' | 'basic';
+  variants?: "primary" | "secondary" | "error" | "success" | "warning" | "info";
+  types?: "solid" | "outline" | "basic";
   rounded?: boolean;
   icon?: JSX.Element;
   extraStyle?: ExtraStyle;
@@ -43,7 +43,7 @@ const BaseButton = tw.button`bg-transparent px-4 py-2 rounded capitalize text-xs
 
 export const Regular: React.FC<BaseButtonProps> = ({
   children,
-  variants = 'info',
+  variants = "info",
   rounded,
   icon,
   disabled,
@@ -56,8 +56,8 @@ export const Regular: React.FC<BaseButtonProps> = ({
       disabled={disabled}
       css={[
         solid[variants],
-        icon && !'children:w-10 h-10',
-        rounded && 'rounded-full',
+        icon && !"children:w-10 h-10",
+        rounded && "rounded-full",
         extraStyle,
       ]}
     >
@@ -69,7 +69,7 @@ export const Regular: React.FC<BaseButtonProps> = ({
 
 export const Outline: React.FC<BaseButtonProps> = ({
   children,
-  variants = 'info',
+  variants = "info",
   rounded,
   icon,
   disabled,
@@ -82,8 +82,8 @@ export const Outline: React.FC<BaseButtonProps> = ({
       disabled={disabled}
       css={[
         outline[variants],
-        icon && !'children:w-10 h-10',
-        rounded && 'rounded-full',
+        icon && !"children:w-10 h-10",
+        rounded && "rounded-full",
         extraStyle,
       ]}
     >
@@ -95,7 +95,7 @@ export const Outline: React.FC<BaseButtonProps> = ({
 
 export const Basic: React.FC<BaseButtonProps> = ({
   children,
-  variants = 'info',
+  variants = "info",
   rounded,
   icon,
   disabled,
@@ -108,8 +108,8 @@ export const Basic: React.FC<BaseButtonProps> = ({
       disabled={disabled}
       css={[
         basic[variants],
-        icon && !'children:w-10 h-10',
-        rounded && 'rounded-full',
+        icon && !"children:w-10 h-10",
+        rounded && "rounded-full",
         extraStyle,
       ]}
     >

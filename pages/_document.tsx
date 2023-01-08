@@ -35,6 +35,9 @@ export default class MyDocument extends Document<InitiapProps> {
     return (
       <Html lang="en">
         <Head>
+          <link rel="manifest" href="/manifest.json" />
+          <link rel="apple-touch-icon" href="/icon.png"></link>
+          <meta name="theme-color" content="#fff" />
           <style
             data-emotion-css={this.props.ids.join(" ")}
             dangerouslySetInnerHTML={{ __html: this.props.css }}

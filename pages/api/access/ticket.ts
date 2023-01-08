@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import infrastructure from "@/bootstrap/Infrastructure.bootstrap";
-import { EndpointsAPI } from "@/domains/Endpoints.domains";
+import { EndpointsAPI } from "services/Endpoints.services";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { setCookie } from "cookies-next";
 

@@ -4,7 +4,7 @@ import tw from "twin.macro";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import infrastructure from "@/bootstrap/Infrastructure.bootstrap";
-import { EndpointsClient } from "@/domains/Endpoints.domains";
+import { EndpointsClient } from "services/Endpoints.services";
 import { useState } from "react";
 import { Button, Text } from "@/components/atoms";
 import { PowerIcon } from "@heroicons/react/24/outline";
@@ -106,7 +106,7 @@ const OnlineStatusSection: React.FC<{ name: string; status: string }> = ({
         variants={status === "online" ? "error" : "success"}
         onClick={() => setIsPromptShow(true)}
       >
-        <PowerIcon css={[tw`w-4 h-4 text-error-500`]} />
+        <PowerIcon css={[tw`w-4 h-4`]} />
       </Button.Outline>
     </HStack>
   );
